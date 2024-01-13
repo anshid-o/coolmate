@@ -1,0 +1,33 @@
+import 'package:coolmate/pages/bill/model/person_model.dart';
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+
+ValueNotifier<List<Person>> personListNotifier = ValueNotifier([]);
+late Database _db;
+Future<void> initDataBase() async {
+  _db = await openDatabase(
+    'person.db',
+    version: 1,
+    onCreate: (db, version) async {
+      await db.execute(
+          'CREATE TABLE person(id INTEGER PRIMARY KEY,name TEXT,user TEXT,password TEXT)');
+    },
+  );
+}
+
+// Future<void> addPerson(Person value) async {
+//   personListNotifier.value.add(value);
+//   personListNotifier.notifyListeners();
+// }
+
+Future<void> getAllPerson() async {
+  personListNotifier.value.clear();
+  final values = await _db.rawQuery('SELECT * FROM person');
+  print(values);
+  // personListNotifier.notifyListeners();
+}
+
+Future<void> deletePerson() async {
+  getAllPerson();
+  // personListNotifier.notifyListeners();
+}

@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Center(
             child: Text(
           '${_selectedIndex + 1}',
-          style: const TextStyle(fontSize: 30),
+          style: const TextStyle(fontSize: 30, color: Colors.black),
         ));
     }
   }

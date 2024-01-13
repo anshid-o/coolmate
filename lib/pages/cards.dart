@@ -1,3 +1,4 @@
+import 'package:coolmate/database/temp.dart';
 import 'package:coolmate/pages/bill/temp.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_web/material.dart';
@@ -14,6 +15,8 @@ Widget tickets(Color color, BuildContext context, IconData icon,
             Navigator.push(context, MaterialPageRoute(builder: (ctx) {
               return BillScreen();
             }));
+          } else if (newCount == 1) {
+            demoDb();
           }
         },
         child: Container(

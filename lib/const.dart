@@ -43,3 +43,28 @@ List<String> quotes = [
   "I am Iron Man.",
   "My name is Tony Stark and I’m not afraid of you. I know you’re a coward, so I decided… that you just died, pal. I’m gonna come get the body. There’s no politics here, it’s just good old-fashioned revenge.",
 ];
+
+void showDone(BuildContext ctx, String name, IconData icon, Color c) {
+  ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+    duration: const Duration(milliseconds: 1500),
+    behavior: SnackBarBehavior.floating,
+    elevation: 5,
+    content: Row(
+      children: [
+        Text(
+          name,
+          style: const TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Icon(
+          icon,
+          color: c,
+        ),
+      ],
+    ),
+    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+  ));
+}
