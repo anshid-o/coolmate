@@ -82,73 +82,18 @@ class _DashboardState extends State<Dashboard> {
                         //   fit: BoxFit.fill,
                         // ),
                         Container(
-                          child: const Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            //  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Beautiful Nature",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'HelveticaNeue',
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  '''The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.''',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'HelveticaNeue',
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Text(
-                                      "800/night",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'HelveticaNeue',
-                                      ),
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Icon(Icons.location_on),
-                                        Text(
-                                          "Milan, Italy",
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'HelveticaNeue',
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                            ],
+                          child: Center(
+                            child: Text(
+                              index.toString(),
+                              style: TextStyle(fontSize: 50),
+                            ),
                           ),
                         ),
                       ]),
                 ),
               );
             },
-            childCount: 8,
+            childCount: 6,
           ),
         )
       ],

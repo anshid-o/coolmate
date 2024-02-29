@@ -1,3 +1,4 @@
+import 'package:coolmate/database/db.dart';
 import 'package:flutter/material.dart';
 
 class MyWidget extends StatelessWidget {
@@ -23,7 +24,11 @@ class Pages extends StatelessWidget {
               //     MaterialPageRoute(builder: (ctx) => const LoginPage()));
             },
             child: const Text('Login Page')),
-        ElevatedButton(onPressed: () {}, child: const Text('Page 1')),
+        ElevatedButton(
+            onPressed: () {
+              // getUsers();
+            },
+            child: const Text('Pagedh 1')),
         ElevatedButton(onPressed: () {}, child: const Text('Page 2')),
       ],
     );

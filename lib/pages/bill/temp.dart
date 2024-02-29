@@ -21,8 +21,7 @@ class _BillScreenState extends State<BillScreen> {
     // getAllPerson();
 
     Size size = MediaQuery.of(context).size;
-    print(size.width);
-    print(size.height);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Enter Bill details')),
       body: Column(
@@ -408,7 +407,82 @@ class _BillScreenState extends State<BillScreen> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: size.width * .075,
+                            height: size.height * .1,
+                            decoration: BoxDecoration(
+                                color: Colors.amber[50],
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.blueAccent)),
+                            child: Center(
+                              child: Text(
+                                'Recall GST B2C',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: (size.height > 840) &&
+                                            (size.width > 1500)
+                                        ? 25
+                                        : 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: size.width * .075,
+                            height: size.height * .1,
+                            decoration: BoxDecoration(
+                                color: Colors.amber[50],
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.blueAccent)),
+                            child: Center(
+                              child: Text(
+                                'Recall GST B2C',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: (size.height > 840) &&
+                                            (size.width > 1500)
+                                        ? 25
+                                        : 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: size.width * .075,
+                            height: size.height * .1,
+                            decoration: BoxDecoration(
+                                color: Colors.amber[50],
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.blueAccent)),
+                            child: Center(
+                              child: Text(
+                                'Recall GST B2C',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: (size.height > 840) &&
+                                            (size.width > 1500)
+                                        ? 25
+                                        : 15,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Container(

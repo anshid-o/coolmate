@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_web/material.dart';
 
+// import 'package:flutter_web/material.dart';
+const String projectId = 'coolmate-d347d';
 List<MaterialColor> colors = [
   Colors.pink,
   Colors.amber,
@@ -67,4 +68,76 @@ void showDone(BuildContext ctx, String name, IconData icon, Color c) {
     ),
     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
   ));
+}
+
+class OldCard extends StatelessWidget {
+  const OldCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        //  mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "Beautiful Nature",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: 'HelveticaNeue',
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              '''The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.''',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'HelveticaNeue',
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  "800/night",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'HelveticaNeue',
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.location_on),
+                    Text(
+                      "Milan, Italy",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'HelveticaNeue',
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+        ],
+      ),
+    );
+  }
 }
