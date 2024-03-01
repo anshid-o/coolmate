@@ -65,6 +65,21 @@ Future<List<String>> collectFirebaseusers() async {
   return datas;
 }
 
+Future<List<Map<String, dynamic>>> collectFirebaseusersFull() async {
+  Firestore firestore = Firestore.instance;
+
+  List<Map<String, dynamic>> datas = [];
+
+  await firestore.collection('user').get().then((e) {
+    e.forEach((element) {
+      // print(element);
+      datas.add(element.map);
+    });
+  });
+
+  return datas;
+}
+
 Future<void> updateFirebaseUsers() async {
   if (await ConnectivityWrapper.instance.isConnected) {
     print('cloud updated');
@@ -80,8 +95,6 @@ Future<void> updateFirebaseUsers() async {
       if (!datasF.contains(element[0])) {
         print('----------${element[0]} added to cloud-------');
         await setUsers(element[0], element[1]);
-      } else {
-        print('${element[0]} already exist in cloud');
       }
     });
   } else {

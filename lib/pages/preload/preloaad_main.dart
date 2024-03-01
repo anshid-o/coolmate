@@ -372,15 +372,16 @@ class _PreloadPageState extends State<PreloadPage> {
                             )),
                   ),
                   ElevatedButton(
-                      onPressed: () async {
-                        isChoosedOne.value = false;
-                        nameCont.text = '';
-                        addrCont.text = '';
-                        phoneCont.text = '';
-                        stateCont.text = '';
-                        gstCont.text = '';
-                      },
-                      child: const Text('Drop')),
+                    onPressed: () async {
+                      isChoosedOne.value = false;
+                      nameCont.text = '';
+                      addrCont.text = '';
+                      phoneCont.text = '';
+                      stateCont.text = '';
+                      gstCont.text = '';
+                    },
+                    child: const Text('Drop'),
+                  ),
                   ElevatedButton(
                       onPressed: () {
                         isAdmin = false;

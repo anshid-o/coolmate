@@ -1,3 +1,5 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:coolmate/database/firestore_db.dart';
 import 'package:mysql_client/mysql_client.dart';
 
 Future<void> registerDB(String user, String password) async {
@@ -64,6 +66,33 @@ Future<void> getUsers() async {
   await conn.close();
 }
 
+//Update local from cloud-------------------------
+Future<void> updateMysqlUsers() async {
+  if (await ConnectivityWrapper.instance.isConnected) {
+    print('mysql updated');
+    List<String?> datasM = await collectMysqlUsersEmail();
+
+    List<Map<String, dynamic>> datasF = await collectFirebaseusersFull();
+
+    List<List<String?>> emails = [];
+    // for (var element in datasM) {
+    //   emails.add([element.colByName('email'), element.colByName('password')]);
+    // }
+    datasF.forEach((element) {
+      emails.add([element['email'], element['password']]);
+    });
+
+    emails.forEach((element) async {
+      if (!datasM.contains(element[0])) {
+        print(element);
+        registerDB(element[0]!, element[1]!);
+      }
+    });
+  } else {
+    print('not connected ----- no updation');
+  }
+}
+
 Future<List<ResultSetRow>> collectMysqlUsers() async {
   // create connection
   final conn = await MySQLConnection.createConnection(
@@ -84,6 +113,33 @@ Future<List<ResultSetRow>> collectMysqlUsers() async {
   // print query result
   for (final row in result.rows) {
     datas.add(row);
+  }
+
+  // close all connections
+  await conn.close();
+  return datas;
+}
+
+Future<List<String?>> collectMysqlUsersEmail() async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+  var result = await conn.execute("SELECT * FROM user");
+  List<String?> datas = [];
+  // print query result
+  for (final row in result.rows) {
+    datas.add(row.assoc()['email']);
   }
 
   // close all connections

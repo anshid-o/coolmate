@@ -1,5 +1,6 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:coolmate/database/firestore_db.dart';
+import 'package:coolmate/database/mysql_db.dart';
 import 'package:coolmate/pages/login_page.dart';
 import 'package:coolmate/pages/dashboard_page.dart';
 import 'package:coolmate/pages/preload/preloaad_main.dart';
@@ -23,6 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     updateFirebaseUsers();
+    updateMysqlUsers();
     // initialization();
   }
 
