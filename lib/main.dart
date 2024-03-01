@@ -1,7 +1,9 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:coolmate/const.dart';
+import 'package:coolmate/pages/home.dart';
+import 'package:coolmate/pages/login_page.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:coolmate/pages/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,19 +16,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ConnectivityAppWrapper(
+      app: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: 'Anta',
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+
+        // home: LoginForm(),
+        home: MyHomePage(),
       ),
-      // home: Scaffold(
-      //   body: Center(
-      //     child: Text('data'),
-      //   ),
-      // ),
-      home: MyHomePage(),
     );
   }
 }

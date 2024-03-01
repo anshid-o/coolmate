@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 // import 'package:flutter_web/material.dart';
 const String projectId = 'coolmate-d347d';
-List<MaterialColor> colors = [
-  Colors.pink,
-  Colors.amber,
-  Colors.teal,
-  Colors.lightBlue,
-];
+// List<MaterialColor> colors = [
+//   Colors.teal,
+//   Colors.teal,
+//   Colors.teal,
+//   Colors.teal,
+// ];
 List<int> newTexts = [0, 1, 2, 3];
 List<String> randomNumbers = ["13", "12", "124", "13", "14"];
 List<IconData> icons = [
@@ -25,6 +25,13 @@ List<String> elementsName = [
   "Carbon",
   "Nitrogen"
 ];
+List<String> titles = [
+  "Sales Invoice",
+  "Sales Return",
+  "Sales Order",
+  "Coming Soon",
+];
+
 List<String> elementsWeights = [
   "1.0079",
   "4.0026",

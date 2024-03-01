@@ -1,5 +1,6 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:coolmate/const.dart';
-import 'package:coolmate/database/db.dart';
+import 'package:coolmate/database/mysql_db.dart';
 import 'package:firedart/firedart.dart';
 import 'package:mysql_client/mysql_client.dart';
 
@@ -65,20 +66,25 @@ Future<List<String>> collectFirebaseusers() async {
 }
 
 Future<void> updateFirebaseUsers() async {
-  List<ResultSetRow> datasM = await collectMysqlUsers();
-  List<String> datasF = await collectFirebaseusers();
+  if (await ConnectivityWrapper.instance.isConnected) {
+    print('cloud updated');
+    List<ResultSetRow> datasM = await collectMysqlUsers();
+    List<String> datasF = await collectFirebaseusers();
 
-  List<List<String?>> emails = [];
-  for (var element in datasM) {
-    emails.add([element.colByName('email'), element.colByName('password')]);
-  }
-
-  emails.forEach((element) async {
-    if (!datasF.contains(element[0])) {
-      print('----------${element[0]} added to cloud-------');
-      await setUsers(element[0], element[1]);
-    } else {
-      print('${element[0]} already exist in cloud');
+    List<List<String?>> emails = [];
+    for (var element in datasM) {
+      emails.add([element.colByName('email'), element.colByName('password')]);
     }
-  });
+
+    emails.forEach((element) async {
+      if (!datasF.contains(element[0])) {
+        print('----------${element[0]} added to cloud-------');
+        await setUsers(element[0], element[1]);
+      } else {
+        print('${element[0]} already exist in cloud');
+      }
+    });
+  } else {
+    print('not connected ----- no updation');
+  }
 }
