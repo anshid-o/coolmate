@@ -44,8 +44,10 @@ dependencies:
 
   connectivity_wrapper: ^1.1.4
   lottie: ^3.1.0
-  # printing: ^5.12.0
-  # pdf: ^3.10.8
+  printing: ^5.12.0
+  pdf: ^3.10.8
+
+  fluid_dialog: ^2.0.0
 
 
 dev_dependencies:
@@ -97,6 +99,10 @@ flutter:
     - family: Marhey
       fonts:
         - asset: assets/fonts/Marhey-VariableFont_wght.ttf
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-VariableFont_wght.ttf
+        
         # - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

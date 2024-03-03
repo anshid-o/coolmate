@@ -209,6 +209,64 @@ Future<List<List<String>>> getPreloadCustomerDB(String tname) async {
   return customers;
 }
 
+Future<List<String>> getSingleFromDB(String tname) async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+  var result = await conn.execute("SELECT name FROM $tname");
+
+  List<ResultSetRow> datas = [];
+  // print query result
+  for (final row in result.rows) {
+    datas.add(row);
+  }
+  List<String> x = [];
+  // close all connections
+  await conn.close();
+  datas.forEach((element) {
+    element.assoc().forEach((key, value) {
+      x.add(value!);
+    });
+  });
+
+  return x;
+}
+
+Future<void> storeSingleDB(String name, String tname) async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+  await conn.execute(
+    "INSERT INTO $tname ( name) VALUES ( :name)",
+    {"name": name},
+  );
+
+  // close all connections
+  await conn.close();
+}
+
 Future<void> updatePreloadData(String tname, String n2, String a, String p,
     String s, String t, String n) async {
   // create connection
@@ -264,4 +322,41 @@ Future<List<List<String>>> deletePreloadData(String tname, String n) async {
   });
 
   return customers;
+}
+
+//Item
+
+Future<void> storeItemDB(String b, String c, String u, String name, String gst,
+    String rp, String p, String q) async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+
+  await conn.execute(
+    "INSERT INTO items(brand,category,unit,name,gst,rprice,mrp,Qty)  VALUES ( :b, :c, :u, :name, :gst, :rp, :p, :q)",
+    {
+      "b": b,
+      "c": c,
+      "u": u,
+      "name": name,
+      "gst": int.parse(gst),
+      "rp": int.parse(rp),
+      "p": int.parse(p),
+      "q": int.parse(q)
+    },
+  );
+
+  // close all connections
+  await conn.close();
 }

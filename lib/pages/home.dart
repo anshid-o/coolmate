@@ -1,9 +1,9 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:coolmate/database/firestore_db.dart';
 import 'package:coolmate/database/mysql_db.dart';
-import 'package:coolmate/pages/login_page.dart';
 import 'package:coolmate/pages/dashboard_page.dart';
 import 'package:coolmate/pages/preload/preloaad_main.dart';
+
 // import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -32,10 +32,8 @@ class _MyHomePageState extends State<MyHomePage> {
   //   FlutterNativeSplash.remove();
   // }
 
-  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       // body: Text('hi'),
       // body: buldPages(),
@@ -70,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text(
                             'Coolmate',
                             style: TextStyle(
-                              fontFamily: 'Marhey',
+                              fontFamily: 'Quicksand',
                               color: col10,
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -158,8 +156,15 @@ class Pages extends StatelessWidget {
                 child: const Text('Page 1')),
             ElevatedButton(
                 onPressed: () {
-                  updateFirebaseUsers();
-                  // collectFirebaseusers();
+                  // showDialog(
+                  //   context: context,
+                  //   builder: (context) => FluidDialog(
+                  //     rootPage: FluidDialogPage(
+                  //       alignment: Alignment.center,
+                  //       builder: (context) => const TestDialog(),
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: const Text('Page 2')),
           ],

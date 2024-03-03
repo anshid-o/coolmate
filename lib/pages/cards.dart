@@ -1,6 +1,8 @@
 import 'package:coolmate/pages/bill/sale_order.dart';
 import 'package:coolmate/pages/bill/sale_return.dart';
 import 'package:coolmate/pages/login_page.dart';
+import 'package:coolmate/pages/coolmate_database/purchase_page.dart';
+import 'package:coolmate/pdf/temp.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_web/material.dart';
 
@@ -10,6 +12,9 @@ Widget tickets(Color color, String tit, BuildContext context, IconData icon,
     padding: const EdgeInsets.all(8.0),
     child: Card(
       elevation: 2,
+      // shape: RoundedRectangleBorder(
+      //   borderRadius: BorderRadius.circular(6.0),
+      // ),
       child: GestureDetector(
         onTap: () {
           if (newCount == 0) {
@@ -20,6 +25,10 @@ Widget tickets(Color color, String tit, BuildContext context, IconData icon,
             Navigator.push(context, MaterialPageRoute(builder: (ctx) {
               return const SaleReturnPage();
             }));
+          } else if (newCount == 2) {
+            Navigator.push(context, MaterialPageRoute(builder: (ctx) {
+              return PurchasePage();
+            }));
           } else if (newCount == 3) {
             Navigator.push(context, MaterialPageRoute(builder: (ctx) {
               return const LoginForm();
@@ -28,7 +37,10 @@ Widget tickets(Color color, String tit, BuildContext context, IconData icon,
         },
         child: Container(
           padding: const EdgeInsets.all(22),
-          color: color,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: color,
+          ),
           width: MediaQuery.of(context).size.width < 1300
               ? MediaQuery.of(context).size.width * .4 - 100
               : MediaQuery.of(context).size.width / 5.5,
