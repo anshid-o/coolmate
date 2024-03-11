@@ -209,7 +209,7 @@ Future<List<List<String>>> getPreloadCustomerDB(String tname) async {
   return customers;
 }
 
-Future<List<String>> getSingleFromDB(String tname) async {
+Future<List<String>> getSingleFromDB(String tname, {col = 'name'}) async {
   // create connection
   final conn = await MySQLConnection.createConnection(
     host: "127.0.0.1",
@@ -224,7 +224,7 @@ Future<List<String>> getSingleFromDB(String tname) async {
   // update some rows
 
   // insert some rows
-  var result = await conn.execute("SELECT name FROM $tname");
+  var result = await conn.execute("SELECT $col FROM $tname");
 
   List<ResultSetRow> datas = [];
   // print query result
@@ -354,6 +354,61 @@ Future<void> storeItemDB(String b, String c, String u, String name, String gst,
       "rp": int.parse(rp),
       "p": int.parse(p),
       "q": int.parse(q)
+    },
+  );
+
+  // close all connections
+  await conn.close();
+}
+
+//stock
+
+Future<void> storeStockDB(
+  int b,
+  String u,
+  String name,
+  int gst,
+  int rp,
+  int p,
+  int q,
+  int x,
+  int a,
+  int aa,
+  int bb,
+  String k,
+  int cc,
+) async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+
+  await conn.execute(
+    "INSERT INTO stocks VALUES ( :b,  :u, :name, :gst, :rp, :p, :q, :x, :a, :aa, :bb, :k, :cc)",
+    {
+      "b": b,
+      "u": u,
+      "name": name,
+      "gst": gst,
+      "rp": rp,
+      "p": p,
+      "q": q,
+      "x": x,
+      "a": a,
+      "aa": aa,
+      "bb": bb,
+      "k": k,
+      "cc": cc,
     },
   );
 

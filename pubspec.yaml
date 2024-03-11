@@ -48,6 +48,7 @@ dependencies:
   pdf: ^3.10.8
 
   fluid_dialog: ^2.0.0
+  glassmorphism_ui: ^0.3.0
 
 
 dev_dependencies:

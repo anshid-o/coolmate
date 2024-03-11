@@ -25,7 +25,7 @@ List<String> titles = [
   "Sales Invoice",
   "Sales Return",
   "Database",
-  "Coming Soon",
+  "Coming Soon"
 ];
 
 List<String> brands = [];
@@ -58,7 +58,8 @@ void showDone(BuildContext ctx, String name, IconData icon, Color c) {
 }
 
 class TestDialog extends StatefulWidget {
-  const TestDialog({Key? key}) : super(key: key);
+  List<String> param1;
+  TestDialog({Key? key, required this.param1}) : super(key: key);
 
   @override
   State<TestDialog> createState() => _TestDialogState();
@@ -114,7 +115,7 @@ class _TestDialogState extends State<TestDialog> {
                     },
                     border: TableBorder.all(
                         borderRadius: BorderRadius.circular(7.5)),
-                    children: loadData(listItems),
+                    children: loadData(listItems, widget.param1),
                   ),
                 ),
               ],
@@ -125,9 +126,7 @@ class _TestDialogState extends State<TestDialog> {
     );
   }
 
-  List<TableRow> loadData(
-    List<List<String>> list,
-  ) {
+  List<TableRow> loadData(List<List<String>> list, List<String> param1) {
     var k = [
       loadRow([
         'ID',
@@ -139,15 +138,16 @@ class _TestDialogState extends State<TestDialog> {
         'MRP',
         'GST',
         'Unit',
-      ], isHeader: true)
+      ], isHeader: true, param1)
     ];
     list.forEach((element) {
-      k.add(loadRow(element));
+      k.add(loadRow(element, param1));
     });
     return k;
   }
 
-  TableRow loadRow(List<String> list, {bool isHeader = false}) {
+  TableRow loadRow(List<String> list, List<String> param1,
+      {bool isHeader = false}) {
     final myStyle = TextStyle(
       fontWeight: isHeader ? FontWeight.bold : FontWeight.w500,
       fontSize: isHeader ? 20 : 18,
@@ -177,6 +177,8 @@ class _TestDialogState extends State<TestDialog> {
                   builder: (context) => SecondDialogPage(
                     name: boxes[0],
                     i: 0,
+                    param1: param1,
+                    param2: list,
                   ),
                 ),
               );
@@ -198,9 +200,15 @@ List<String> boxValues = [];
 
 class SecondDialogPage extends StatefulWidget {
   String name = '';
-
+  List<String> param1;
+  List<String> param2;
   int i;
-  SecondDialogPage({Key? key, required this.name, required this.i})
+  SecondDialogPage(
+      {Key? key,
+      required this.name,
+      required this.i,
+      required this.param1,
+      required this.param2})
       : super(key: key);
 
   @override
@@ -275,6 +283,22 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                             if (widget.i == 3) {
                               showDone(context, 'Item Added', Icons.done,
                                   Colors.green);
+                              print([widget.param1, widget.param2, boxValues]);
+                              storeStockDB(
+                                  int.parse(widget.param1[0]),
+                                  widget.param1[6],
+                                  widget.param1[1],
+                                  widget.param1[2] == 'true' ? 1 : 0,
+                                  widget.param1[3] == 'true' ? 1 : 0,
+                                  widget.param1[4] == 'true' ? 1 : 0,
+                                  widget.param1[5] == 'true' ? 1 : 0,
+                                  int.parse(boxValues[0]),
+                                  int.parse(boxValues[1]),
+                                  int.parse(boxValues[2]),
+                                  int.parse(boxValues[3]),
+                                  '${DateTime.now().day} - ${DateTime.now().month} - ${DateTime.now().year}',
+                                  int.parse(widget.param2[0]));
+                              boxValues.clear();
                               DialogNavigator.of(context).close();
                             } else {
                               _fn.text = '';
@@ -284,6 +308,8 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                                   builder: (context) => SecondDialogPage(
                                     name: boxes[widget.i + 1],
                                     i: widget.i + 1,
+                                    param1: widget.param1,
+                                    param2: widget.param2,
                                   ),
                                 ),
                               );
@@ -291,7 +317,7 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                           }
                         },
                         child: const Text(
-                          'Submit',
+                          'Next',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
