@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:coolmate/colors.dart';
 import 'package:coolmate/database/mysql_db.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
@@ -197,6 +199,7 @@ class _TestDialogState extends State<TestDialog> {
 
 List<String> boxes = ['Quantity', 'Price', 'Discount', 'CESS %'];
 List<String> boxValues = [];
+ValueNotifier<List<List<String>>> stockList = ValueNotifier([]);
 
 class SecondDialogPage extends StatefulWidget {
   String name = '';
@@ -259,7 +262,7 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                           _fn.text = value ?? '';
                         },
                         decoration: InputDecoration(
-                          labelText: '${boxes[widget.i]}',
+                          labelText: boxes[widget.i],
                           prefixIcon: const Icon(Icons.numbers),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20.0),
@@ -277,14 +280,14 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                                 MaterialStateProperty.all(Colors.black),
                             shadowColor:
                                 MaterialStateProperty.all(Colors.black)),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey1.currentState!.validate()) {
                             boxValues.add(_fn.text);
                             if (widget.i == 3) {
                               showDone(context, 'Item Added', Icons.done,
                                   Colors.green);
-                              print([widget.param1, widget.param2, boxValues]);
-                              storeStockDB(
+
+                              await storeStockDB(
                                   int.parse(widget.param1[0]),
                                   widget.param1[6],
                                   widget.param1[1],
@@ -298,6 +301,9 @@ class _SecondDialogPageState extends State<SecondDialogPage> {
                                   int.parse(boxValues[3]),
                                   '${DateTime.now().day} - ${DateTime.now().month} - ${DateTime.now().year}',
                                   int.parse(widget.param2[0]));
+                              stockList.value =
+                                  await getStocksDB(widget.param1[0]);
+
                               boxValues.clear();
                               DialogNavigator.of(context).close();
                             } else {

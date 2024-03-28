@@ -415,3 +415,41 @@ Future<void> storeStockDB(
   // close all connections
   await conn.close();
 }
+
+//stocks
+
+Future<List<List<String>>> getStocksDB(String inv) async {
+  // create connection
+  final conn = await MySQLConnection.createConnection(
+    host: "127.0.0.1",
+    port: 3306,
+    userName: "anshid",
+    password: "Anshid@2002",
+    databaseName: "coolmate", // optional
+  );
+
+  await conn.connect();
+
+  // update some rows
+
+  // insert some rows
+  var result = await conn.execute(
+      "SELECT itemId, price, Qty, discount, cess, credit, transfEst, interState, branchTansIn FROM  stocks where invNo='$inv'");
+  List<ResultSetRow> datas = [];
+  // print query result
+  for (final row in result.rows) {
+    datas.add(row);
+  }
+  List<List<String>> customers = [];
+  // close all connections
+  await conn.close();
+  datas.forEach((element) {
+    List<String> x = [];
+    element.assoc().forEach((key, value) {
+      x.add(value!);
+    });
+    customers.add(x);
+  });
+
+  return customers;
+}

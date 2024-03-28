@@ -2,6 +2,7 @@ import 'package:coolmate/colors.dart';
 import 'package:coolmate/const.dart';
 import 'package:coolmate/database/mysql_db.dart';
 import 'package:coolmate/pages/coolmate_database/add_item.dart';
+import 'package:coolmate/pages/coolmate_database/print_invoice.dart';
 import 'package:fluid_dialog/fluid_dialog.dart';
 
 import 'package:flutter/material.dart';
@@ -16,9 +17,10 @@ class PurchasePage extends StatefulWidget {
 class _PurchasePageState extends State<PurchasePage> {
   TextEditingController invCont = TextEditingController();
   List<List<String>> listSup = [];
-  List<List<String>> listItems = [];
+
   List<String> invIds = [];
   bool isCredit = false;
+  bool isOne = false;
   bool isTranfEns = false;
   bool isInterState = false;
   bool isBranchTransIn = false;
@@ -39,17 +41,23 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   setList() async {
-    listItems = await getPreloadCustomerDB('items');
     listSup = await getPreloadCustomerDB('supplier');
     brands = await getSingleFromDB('brand');
     invIds = await getSingleFromDB('stocks', col: 'invNo');
     categories = await getSingleFromDB('category');
-    listSup.forEach((element) {
+    for (var element in listSup) {
       listSupNames.add(element[0]);
-    });
+    }
     dropdown3value = listSupNames[0];
     setState(() {
       listSup = listSup;
+    });
+  }
+
+  setStock(String inv) async {
+    stockList.value = await getStocksDB(inv);
+    setState(() {
+      stockList = stockList;
     });
   }
 
@@ -75,8 +83,34 @@ class _PurchasePageState extends State<PurchasePage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              stockList.value = [];
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.arrow_back)),
         title: const Text('New Purchase'),
         actions: [
+          isOne
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrintInvoice(),
+                            ));
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.amber)),
+                      child: const Text(
+                        'Print invoice',
+                        style: TextStyle(color: Colors.black),
+                      )),
+                )
+              : SizedBox(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton(
@@ -163,7 +197,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 30,
                               ),
                               Padding(
@@ -209,6 +243,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                   horizontal: size.width * .025,
                                   vertical: size.height * .05),
                               child: DropdownButton(
+                                onTap: () {},
                                 // Initial Value
                                 borderRadius: BorderRadius.circular(20),
                                 value: dropdown3value,
@@ -229,15 +264,77 @@ class _PurchasePageState extends State<PurchasePage> {
                                   setState(() {
                                     dropdown3value = newValue!;
                                   });
+                                  if (isOne == false) {
+                                    print('first stock');
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => FluidDialog(
+                                        rootPage: FluidDialogPage(
+                                          alignment: Alignment.center,
+                                          builder: (context) => TestDialog(
+                                            param1: [
+                                              invCont.text,
+                                              _dateController.text,
+                                              isCredit.toString(),
+                                              isTranfEns.toString(),
+                                              isInterState.toString(),
+                                              isBranchTransIn.toString(),
+                                              dropdown3value
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+
+                                    setState(() {
+                                      isOne = true;
+                                    });
+                                  }
                                 },
                               ),
                             ),
                           ],
                         ),
                       ),
+                      isOne
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: size.width * .025,
+                                  vertical: size.height * .05),
+                              child: ElevatedButton.icon(
+                                  label: Text('Add extra stock'),
+                                  onPressed: () {
+                                    // setState(() {
+                                    //   setStock(invCont.text);
+                                    // });
+                                    print(stockList);
+
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => FluidDialog(
+                                        rootPage: FluidDialogPage(
+                                          alignment: Alignment.center,
+                                          builder: (context) => TestDialog(
+                                            param1: [
+                                              invCont.text,
+                                              _dateController.text,
+                                              isCredit.toString(),
+                                              isTranfEns.toString(),
+                                              isInterState.toString(),
+                                              isBranchTransIn.toString(),
+                                              dropdown3value
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(Icons.add)),
+                            )
+                          : SizedBox()
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Column(
                     children: [
                       isOk
@@ -271,7 +368,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                           });
                                         },
                                       ),
-                                      Text('Credit'),
+                                      const Text('Credit'),
                                     ],
                                   ),
                                   Row(
@@ -284,7 +381,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                           });
                                         },
                                       ),
-                                      Text('Tranf to Enstimate'),
+                                      const Text('Tranf to Enstimate'),
                                     ],
                                   ),
                                   Row(
@@ -297,7 +394,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                           });
                                         },
                                       ),
-                                      Text('Inter State'),
+                                      const Text('Inter State'),
                                     ],
                                   ),
                                   Row(
@@ -310,7 +407,7 @@ class _PurchasePageState extends State<PurchasePage> {
                                           });
                                         },
                                       ),
-                                      Text('Branch Trans In'),
+                                      const Text('Branch Trans In'),
                                     ],
                                   ),
                                 ],
@@ -322,36 +419,39 @@ class _PurchasePageState extends State<PurchasePage> {
                 ],
               ),
             ),
-            isOk
-                ? SizedBox(
-                    width: size.width * .55,
-                    height: size.height * .3,
-                    child: ListView(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                              size.width * .025, 0, size.width * .05, 0),
-                          child: Table(
-                            columnWidths: const {
-                              0: FractionColumnWidth(0.075),
-                              1: FractionColumnWidth(0.125),
-                              2: FractionColumnWidth(0.125),
-                              3: FractionColumnWidth(0.15),
-                              4: FractionColumnWidth(0.1),
-                              5: FractionColumnWidth(0.15),
-                              6: FractionColumnWidth(0.1),
-                              7: FractionColumnWidth(0.1),
-                              8: FractionColumnWidth(0.1),
-                            },
-                            border: TableBorder.all(
-                                borderRadius: BorderRadius.circular(7.5)),
-                            children: loadData(listItems),
+            isOne
+                ? ValueListenableBuilder(
+                    valueListenable: stockList,
+                    builder: (context, value, child) => SizedBox(
+                      width: size.width * .55,
+                      height: size.height * .4,
+                      child: ListView(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                size.width * .025, 0, size.width * .05, 0),
+                            child: Table(
+                              columnWidths: const {
+                                0: FractionColumnWidth(0.15),
+                                1: FractionColumnWidth(0.125),
+                                2: FractionColumnWidth(0.125),
+                                3: FractionColumnWidth(0.15),
+                                4: FractionColumnWidth(0.05),
+                                5: FractionColumnWidth(0.10),
+                                6: FractionColumnWidth(0.05),
+                                7: FractionColumnWidth(0.05),
+                                8: FractionColumnWidth(0.10),
+                              },
+                              border: TableBorder.all(
+                                  borderRadius: BorderRadius.circular(7.5)),
+                              children: loadData(stockList),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   )
-                : SizedBox()
+                : const SizedBox()
           ],
         ),
       ),
@@ -359,7 +459,7 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   Future<void> _showInputDialog(BuildContext context, String name) async {
-    TextEditingController _textEditingController = TextEditingController();
+    TextEditingController textEditingController = TextEditingController();
 
     return showDialog<void>(
       context: context,
@@ -367,7 +467,7 @@ class _PurchasePageState extends State<PurchasePage> {
         return AlertDialog(
           title: Text('Add a $name'),
           content: TextField(
-            controller: _textEditingController,
+            controller: textEditingController,
             decoration: InputDecoration(hintText: "Enter $name name"),
           ),
           actions: <Widget>[
@@ -381,15 +481,15 @@ class _PurchasePageState extends State<PurchasePage> {
               child: const Text('Add'),
               onPressed: () {
                 if (name == 'Brand'
-                    ? brands.contains(_textEditingController.text)
-                    : categories.contains(_textEditingController.text)) {
+                    ? brands.contains(textEditingController.text)
+                    : categories.contains(textEditingController.text)) {
                   showDone(context, '$name already exist', Icons.error,
                       Colors.green);
                 } else {
                   name == 'Brand'
-                      ? brands.add(_textEditingController.text)
-                      : categories.add(_textEditingController.text);
-                  storeSingleDB(_textEditingController.text,
+                      ? brands.add(textEditingController.text)
+                      : categories.add(textEditingController.text);
+                  storeSingleDB(textEditingController.text,
                       name == 'Brand' ? 'brand' : 'category');
                   showDone(context, '$name Added', Icons.done, Colors.red);
                 }
@@ -405,24 +505,37 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   List<TableRow> loadData(
-    List<List<String>> list,
+    ValueNotifier<List<List<String>>> list,
   ) {
     var k = [
       loadRow([
-        'ID',
-        'Brand',
-        'Category',
-        'Name',
-        'GST',
-        'Retail price',
-        'MRP',
+        'Product ID',
+        'Price',
         'Qty',
-        'Unit',
+        'discount',
+        'cess',
+        'credit',
+        'transfEst',
+        'interState',
+        'branchTransIn',
       ], isHeader: true)
     ];
-    list.forEach((element) {
-      k.add(loadRow(element));
-    });
+    for (var element in list.value) {
+      k.add(loadRow([
+        element[0],
+        element[1],
+        element[2],
+        element[3],
+        element[4],
+        element[5] == '1' ? 'true' : 'false',
+        element[6] == '1' ? 'true' : 'false',
+        element[7] == '1' ? 'true' : 'false',
+        element[8] == '1' ? 'true' : 'false'
+      ]));
+
+      print(element);
+    }
+
     return k;
   }
 
@@ -436,33 +549,33 @@ class _PurchasePageState extends State<PurchasePage> {
   //     children: [
   //       GestureDetector(
   //         onTap: () {
-  //           if (_dateController.text == '') {
-  //             showDone(context, 'Choose invoice date', Icons.error, Colors.red);
-  //           } else if (invCont.text == '') {
-  //             showDone(
-  //                 context, 'Enter invoice number', Icons.error, Colors.red);
-  //           } else {
-  //             showDialog(
-  //               context: context,
-  //               builder: (context) => FluidDialog(
-  //                 rootPage: FluidDialogPage(
-  //                   alignment: Alignment.center,
-  //                   builder: (context) => TestDialog(
-  //                     param1: [
-  //                       invCont.text,
-  //                       _dateController.text,
-  //                       isCredit.toString(),
-  //                       isTranfEns.toString(),
-  //                       isInterState.toString(),
-  //                       isBranchTransIn.toString(),
-  //                       list[0]
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ),
-  //             );
-  //             invCont.text = '';
-  //           }
+  // if (_dateController.text == '') {
+  //   showDone(context, 'Choose invoice date', Icons.error, Colors.red);
+  // } else if (invCont.text == '') {
+  //   showDone(
+  //       context, 'Enter invoice number', Icons.error, Colors.red);
+  // } else {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => FluidDialog(
+  //       rootPage: FluidDialogPage(
+  //         alignment: Alignment.center,
+  //         builder: (context) => TestDialog(
+  //           param1: [
+  //             invCont.text,
+  //             _dateController.text,
+  //             isCredit.toString(),
+  //             isTranfEns.toString(),
+  //             isInterState.toString(),
+  //             isBranchTransIn.toString(),
+  //             list[0]
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //   invCont.text = '';
+  // }
   //         },
   //         child: Padding(
   //           padding: const EdgeInsets.all(8.0),
@@ -495,7 +608,36 @@ class _PurchasePageState extends State<PurchasePage> {
     return TableRow(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            print('hi');
+            if (_dateController.text == '') {
+              showDone(context, 'Choose invoice date', Icons.error, Colors.red);
+            } else if (invCont.text == '') {
+              showDone(
+                  context, 'Enter invoice number', Icons.error, Colors.red);
+            } else {
+              showDialog(
+                context: context,
+                builder: (context) => FluidDialog(
+                  rootPage: FluidDialogPage(
+                    alignment: Alignment.center,
+                    builder: (context) => TestDialog(
+                      param1: [
+                        invCont.text,
+                        _dateController.text,
+                        isCredit.toString(),
+                        isTranfEns.toString(),
+                        isInterState.toString(),
+                        isBranchTransIn.toString(),
+                        list[0]
+                      ],
+                    ),
+                  ),
+                ),
+              );
+              invCont.text = '';
+            }
+          },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: isHeader

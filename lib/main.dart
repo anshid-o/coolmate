@@ -1,7 +1,6 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:coolmate/const.dart';
 import 'package:coolmate/pages/home.dart';
-import 'package:coolmate/pages/login_page.dart';
 import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 

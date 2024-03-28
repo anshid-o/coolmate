@@ -1,4 +1,3 @@
-import 'package:coolmate/database/mysql_db.dart';
 import 'package:flutter/material.dart';
 
 class MyWidget extends StatelessWidget {

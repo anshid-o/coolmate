@@ -1,5 +1,4 @@
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:coolmate/const.dart';
 import 'package:coolmate/database/mysql_db.dart';
 import 'package:firedart/firedart.dart';
 import 'package:mysql_client/mysql_client.dart';
@@ -21,14 +20,12 @@ Future<void> getItems() async {
 
   final querySnapshot = await firestore.collection('items').get();
 
-  querySnapshot.forEach((document) {
+  for (var document in querySnapshot) {
     datas.add(document.map);
-  });
+  }
 
   for (var element in datas) {
-    element.forEach((key, value) {
-      print('$key : $value');
-    });
+    element.forEach((key, value) {});
   }
 }
 
@@ -44,9 +41,7 @@ Future<void> checkUsers() async {
   });
 
   for (var element in datas) {
-    element.forEach((key, value) {
-      print('$key : $value');
-    });
+    element.forEach((key, value) {});
   }
 }
 
@@ -56,10 +51,10 @@ Future<List<String>> collectFirebaseusers() async {
   List<String> datas = [];
 
   await firestore.collection('user').get().then((e) {
-    e.forEach((element) {
+    for (var element in e) {
       // print(element);
       datas.add(element.map['email']);
-    });
+    }
   });
 
   return datas;
@@ -71,10 +66,10 @@ Future<List<Map<String, dynamic>>> collectFirebaseusersFull() async {
   List<Map<String, dynamic>> datas = [];
 
   await firestore.collection('user').get().then((e) {
-    e.forEach((element) {
+    for (var element in e) {
       // print(element);
       datas.add(element.map);
-    });
+    }
   });
 
   return datas;
@@ -82,7 +77,6 @@ Future<List<Map<String, dynamic>>> collectFirebaseusersFull() async {
 
 Future<void> updateFirebaseUsers() async {
   if (await ConnectivityWrapper.instance.isConnected) {
-    print('cloud updated');
     List<ResultSetRow> datasM = await collectMysqlUsers();
     List<String> datasF = await collectFirebaseusers();
 
@@ -93,11 +87,8 @@ Future<void> updateFirebaseUsers() async {
 
     emails.forEach((element) async {
       if (!datasF.contains(element[0])) {
-        print('----------${element[0]} added to cloud-------');
         await setUsers(element[0], element[1]);
       }
     });
-  } else {
-    print('not connected ----- no updation');
-  }
+  } else {}
 }

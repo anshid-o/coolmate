@@ -2,7 +2,6 @@ import 'package:coolmate/pages/bill/sale_order.dart';
 import 'package:coolmate/pages/bill/sale_return.dart';
 import 'package:coolmate/pages/login_page.dart';
 import 'package:coolmate/pages/coolmate_database/purchase_page.dart';
-import 'package:coolmate/pdf/temp.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_web/material.dart';
 
